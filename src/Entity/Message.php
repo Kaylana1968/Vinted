@@ -24,6 +24,9 @@ class Message
     #[ORM\Column(length: 1027)]
     private ?string $content = null;
 
+    #[ORM\Column]
+    private ?bool $seen = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +64,18 @@ class Message
     public function setContent(string $content): static
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function isSeen(): ?bool
+    {
+        return $this->seen;
+    }
+
+    public function setSeen(bool $seen): static
+    {
+        $this->seen = $seen;
 
         return $this;
     }
