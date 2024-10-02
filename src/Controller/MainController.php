@@ -28,7 +28,7 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/{category}', name: 'category')]
+    #[Route('/category/{category}', name: 'category')]
     public function category(string $category): Response
     {
         $allArticle = $this->callRequest->GetAllArticleByCategory($category);
