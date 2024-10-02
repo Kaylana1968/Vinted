@@ -13,7 +13,7 @@ class CallRequest
 {
     public function __construct(
         private LoggerInterface $logger,
-        private readonly EntityManagerInterface $entityManager,
+        private EntityManagerInterface $entityManager,
         private Security $security
     ) {}
 

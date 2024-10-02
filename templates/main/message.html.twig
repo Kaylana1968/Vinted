@@ -15,14 +15,18 @@
 </style>
 
 <div class="example-wrapper">
+
     {% for message in all_message %}
+
     <div class="container">
         <div class="sender">{{message.sender.name}}</div>
-         <div class="container-2">
-        <div class="content">{{message.content}}</div>
+        <div class="container-2">
+            <div class="content">{{message.content}}</div>
         </div>
         <div class="receiver">{{message.receiver.name}}</div>
     </div>
+
     {% endfor %}
+
 </div>
 {% endblock %}

@@ -18,7 +18,6 @@ class MainController extends AbstractController
         private EntityManagerInterface $entityManager
     ) {}
 
-
     #[Route('/', name: 'home')]
     public function home(): Response
     {
@@ -72,8 +71,8 @@ class MainController extends AbstractController
     #[Route('/message', name: 'message')]
     public function message(): Response
     {
-
         $messageAllList = $this->callRequest->GetAllMessage();
+
         return $this->render('main/message.html.twig', [
             'all_message' => $messageAllList,
         ]);
