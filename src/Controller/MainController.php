@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Form\FormSellType;
 use App\Service\CallRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class MainController extends AbstractController
@@ -50,10 +52,14 @@ class MainController extends AbstractController
     }
 
     #[Route('/sell', name: 'sell')]
-    public function sell(): Response
+    public function sell(Request $request): Response
     {
+        $sellArticle = new Article();
+        $form = $this->createForm(FormSellType::class, $sellArticle);
+        $form->handleRequest($request);
+
         return $this->render('main/sell.html.twig', [
-            'controller_name' => 'MainController',
+            'form_sell' => $form,
         ]);
     }
 
