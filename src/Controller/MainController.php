@@ -12,16 +12,14 @@ use Symfony\Component\Routing\Attribute\Route;
 class MainController extends AbstractController
 
 {
-    public function __construct(private CallRequest $callRequest)
-    {
-        
-    }
+    public function __construct(private CallRequest $callRequest) {}
+
     #[Route('/', name: 'home')]
     public function home(): Response
     {
-        $allArticle= $this->callRequest->GetAllArticle();
-        return $this -> render('main/home.html.twig',[
-            'all_article'=>$allArticle
+        $allArticle = $this->callRequest->GetAllArticle();
+        return $this->render('main/home.html.twig', [
+            'all_article' => $allArticle
         ]);
     }
 
