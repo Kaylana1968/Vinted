@@ -6,9 +6,22 @@
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .buttons { margin-top: 20px; }
+    .buttons button { margin-right: 10px; padding: 10px 15px; background-color: #007BFF; color: white; border: none; cursor: pointer; }
+    .buttons button:last-child { background-color: #28A745; }
+    .buttons button:hover { opacity: 0.8; }
 </style>
 
 <div class="example-wrapper">
+  <h1>{{ article.title }}</h1>
+  <img src="{{ article.picture }}" alt="Article Image">
+  <p>{{ article.description }}</p>
+  <p>{{ article.price }} €</p>
   
+  <div class="buttons">
+    <button onclick="location.href='{{ path('buy', {'id': article.id}) }}'">Acheter</button>
+    <button onclick="location.href='{{ path('message', {'id': article.seller.id}) }}'">Contacter le vendeur</button>
+  </div>
 </div>
 {% endblock %}
+
