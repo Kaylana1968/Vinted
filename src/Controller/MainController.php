@@ -12,19 +12,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class MainController extends AbstractController
-
 {
-    public function __construct(private CallRequest $callRequest, private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(
+        private CallRequest $callRequest,
+        private EntityManagerInterface $entityManager
+    ) {}
 
-    
+
     #[Route('/', name: 'home')]
     public function home(): Response
     {
         $allArticle = $this->callRequest->GetAllArticle();
 
-        return $this -> render('main/home.html.twig',[
+        return $this->render('main/home.html.twig', [
             'all_article' => $allArticle
         ]);
     }
@@ -34,16 +34,8 @@ class MainController extends AbstractController
     {
         $allArticle = $this->callRequest->GetAllArticleByCategory($category);
 
-        return $this -> render('main/home.html.twig',[
+        return $this->render('main/home.html.twig', [
             'all_article' => $allArticle
-        ]);
-    }
-
-    #[Route('/login', name: 'login')]
-    public function login(): Response
-    {
-        return $this->render('main/login.html.twig', [
-            'controller_name' => 'MainController',
         ]);
     }
 
@@ -53,7 +45,7 @@ class MainController extends AbstractController
         $article = $this->entityManager->getRepository(Article::class)->find($id);
 
         return $this->render('main/article.html.twig', [
-            'article' =>$article
+            'article' => $article
         ]);
     }
 
