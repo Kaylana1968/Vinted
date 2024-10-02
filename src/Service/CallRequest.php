@@ -21,4 +21,12 @@ class CallRequest
         
         return $allArticle;
     }
+
+    public function GetAllUser (){
+
+        $userList = $this->entityManager->getRepository(User::class);
+        $allUser = $userList->findAll();
+
+        return $allUser;
+    }
 }

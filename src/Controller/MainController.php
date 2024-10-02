@@ -12,10 +12,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class MainController extends AbstractController
 
 {
-    public function __construct(private CallRequest $callRequest)
+    public function __construct(private CallRequest $callRequest, private EntityManagerInterface $entityManager)
     {
-        
     }
+
+    
     #[Route('/', name: 'home')]
     public function home(): Response
     {
@@ -34,10 +35,12 @@ class MainController extends AbstractController
     }
 
     #[Route('/article/{id}', name: 'article')]
-    public function article(): Response
+    public function article(int $id): Response
     {
+        $article = $this->entityManager->getRepository(Article::class)->find($id);
+
         return $this->render('main/article.html.twig', [
-            'controller_name' => 'MainController',
+            'article' =>$article
         ]);
     }
 
@@ -61,6 +64,14 @@ class MainController extends AbstractController
     public function message(): Response
     {
         return $this->render('main/message.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
+
+    #[Route('/buy', name: 'buy')]
+    public function buy(): Response
+    {
+        return $this->render('main/buy.html.twig', [
             'controller_name' => 'MainController',
         ]);
     }
