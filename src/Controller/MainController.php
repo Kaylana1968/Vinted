@@ -50,8 +50,10 @@ class MainController extends AbstractController
     #[Route('/message', name: 'message')]
     public function message(): Response
     {
+
+        $messageAllList = $this->callRequest->GetAllMessage();
         return $this->render('main/message.html.twig', [
-            'controller_name' => 'MainController',
+            'all_message' => $messageAllList,
         ]);
     }
 }
