@@ -20,9 +20,20 @@ class MainController extends AbstractController
     #[Route('/', name: 'home')]
     public function home(): Response
     {
-        $allArticle= $this->callRequest->GetAllArticle();
+        $allArticle = $this->callRequest->GetAllArticle();
+
         return $this -> render('main/home.html.twig',[
-            'all_article'=>$allArticle
+            'all_article' => $allArticle
+        ]);
+    }
+
+    #[Route('/{category}', name: 'category')]
+    public function category(string $category): Response
+    {
+        $allArticle = $this->callRequest->GetAllArticleByCategory($category);
+
+        return $this -> render('main/home.html.twig',[
+            'all_article' => $allArticle
         ]);
     }
 
