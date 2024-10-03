@@ -19,7 +19,10 @@ class FormSellType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('picture', FileType::class, ['label' => 'Add a picture'])
+            ->add('picture', FileType::class, [
+                'label' => 'Add a picture',
+                'mapped' => false,
+            ])
             ->add('title', TextType::class, ['label' => 'Add a title', 'constraints' => [
                 new Assert\NotBlank(['message' => 'Le titre ne peut pas être vide.']),
                 new Assert\Length([

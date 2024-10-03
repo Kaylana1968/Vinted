@@ -65,20 +65,33 @@ class MainController extends AbstractController
     #[Route('/sell', name: 'sell')]
     public function sell(
         Request $request,
-        EntityManagerInterface $entityManager
-    )
-    {   
+        EntityManagerInterface $entityManager,
+    ) {
         $sellArticle = new Article();
         $form = $this->createForm(FormSellType::class, $sellArticle);
         $form->handleRequest($request);
 
-         if($form->isSubmitted()&& $form->isValid()){
-            $sellArticle-> setSeller($this->getUser());
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sellArticle->setSeller($this->getUser());
+
+            $imageFile = $form->get('picture')->getData();
+            $fileName = $sellArticle->getId() . '.jpg';
+
+            // Move the file to the directory where images are stored
+            $imageFile->move(
+                $this->getParameter('images_directory'), // Defined in your config/services.yaml
+                $fileName
+            );
+
+            $sellArticle->setPicture("img/" . $fileName);
+
             $entityManager->persist($sellArticle);
             $entityManager->flush();
 
-            return $this->redirectToRoute('home');
-         }
+            return $this->redirectToRoute('article', [
+                'id' => $sellArticle->getId()
+            ]);
+        }
 
         return $this->render('main/sell.html.twig', [
             'form_sell' => $form,

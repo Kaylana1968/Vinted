@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Sell{% endblock %}
+
 {% block body %}
 
 <style>
@@ -10,14 +12,6 @@
         text-align:center;
     }
 </style>
-
-    {% block title %}Sell{% endblock %}
     <h1> Vendez votre article !</h1>
-    {{ form_start(form_sell) }}
     {{form(form_sell)}}
-    {{ form_end(form_sell) }}
-
-       
-
-    </div>
 {% endblock %}
