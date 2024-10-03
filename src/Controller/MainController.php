@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Form\FormSellType;
 use App\Service\CallRequest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,10 +52,13 @@ class MainController extends AbstractController
     #[Route('/profile', name: 'profile')]
     public function profile(): Response
     {
+        $user = $this->getUser();
+
         return $this->render('main/profile.html.twig', [
-            'controller_name' => 'MainController',
+            'user' => $user
         ]);
     }
+
 
     #[Route('/sell', name: 'sell')]
     public function sell(Request $request): Response
@@ -91,6 +95,26 @@ class MainController extends AbstractController
     {
         return $this->render('main/favorite.html.twig', [
             'controller_name' => 'MainController',
+        ]);
+    }
+
+    #[Route(path: '/buyed', name: 'buyed')]
+    public function buyed(): Response
+    {
+        $buyedArticle = $this->callRequest->GetBuyedArticleFromUser();
+
+        return $this->render('main/buyed.html.twig', [
+            'selledArticle' => $buyedArticle
+        ]);
+    }
+
+    #[Route(path: '/selled', name: 'selled')]
+    public function selled(): Response
+    {
+        $selledArticle = $this->callRequest->GetSelledArticleFromUser();
+
+        return $this->render('main/selled.html.twig', [
+            'selledArticle' => $selledArticle
         ]);
     }
 }

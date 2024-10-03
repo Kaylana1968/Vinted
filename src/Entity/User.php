@@ -63,6 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->articles = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->favorites = new ArrayCollection();
+        $this->buyed_articles = new ArrayCollection();
     }
 
     /**
@@ -73,6 +74,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+    /**
+     * @var Collection<int, Article>
+     */
+    #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'buyer')]
+    private Collection $buyed_articles;
 
     public function getId(): ?int
     {
@@ -284,6 +291,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getBuyedArticles(): Collection
+    {
+        return $this->buyed_articles;
+    }
+
+    public function addBuyedArticle(Article $buyedArticle): static
+    {
+        if (!$this->buyed_articles->contains($buyedArticle)) {
+            $this->buyed_articles->add($buyedArticle);
+            $buyedArticle->setBuyer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBuyedArticle(Article $buyedArticle): static
+    {
+        if ($this->buyed_articles->removeElement($buyedArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($buyedArticle->getBuyer() === $this) {
+                $buyedArticle->setBuyer(null);
+            }
+        }
 
         return $this;
     }

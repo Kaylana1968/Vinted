@@ -43,6 +43,9 @@ class Article
     #[ORM\OneToMany(targetEntity: Favorite::class, mappedBy: 'article_id', orphanRemoval: true)]
     private Collection $favorites;
 
+    #[ORM\ManyToOne(inversedBy: 'buyed_articles')]
+    private ?User $buyer = null;
+
     public function __construct()
     {
         $this->favorites = new ArrayCollection();
@@ -163,6 +166,18 @@ class Article
                 $favorite->setArticleId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBuyer(): ?User
+    {
+        return $this->buyer;
+    }
+
+    public function setBuyer(?User $buyer): static
+    {
+        $this->buyer = $buyer;
 
         return $this;
     }

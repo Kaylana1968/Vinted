@@ -9,9 +9,17 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Profile</h1>
+    <h1>Profile de {{ user.name }}</h1>
+    <h6>{{ user.email }}</h6>
+    <img src="{{ user.profilePicture }}">
         <li>
             <a href={{ path('favorite') }}> Favorite </a>
+        </li>
+        <li>
+            <a href={{ path('buyed') }}> Buyed </a>
+        </li>
+        <li>
+            <a href={{ path('selled') }}> Selled </a>
         </li>
 </div>
 {% endblock %}

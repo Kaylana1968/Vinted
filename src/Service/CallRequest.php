@@ -33,6 +33,13 @@ class CallRequest
         return $allArticle;
     }
 
+    public function GetConnectedUser (int $user)
+    {
+        $user = $this->security->getUser();
+
+        return $user;
+    }
+
     public function GetAllUser ()
     {
         $userList = $this->entityManager->getRepository(User::class);
@@ -51,5 +58,25 @@ class CallRequest
         $messageAllList = array_merge($messageSenderList, $messageReceiverList);
 
         return $messageAllList;
+    }
+
+    public function GetSelledArticleFromUser ()
+    {
+        $user = $this->security->getUser();
+
+        $articleList = $this->entityManager->getRepository(Article::class);
+        $allArticle = $articleList->findBy(['status' => 1, "seller" => $user]);
+        
+        return $allArticle;
+    }
+
+    public function GetBuyedArticleFromUser ()
+    {
+        $user = $this->security->getUser();
+
+        $articleList = $this->entityManager->getRepository(Article::class);
+        $allArticle = $articleList->findBy(['status' => 1, "buyer" => $user]);
+        
+        return $allArticle;
     }
 }
