@@ -253,7 +253,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->favorites->contains($favorite)) {
             $this->favorites->add($favorite);
-            $favorite->setUserId($this);
+            $favorite->setUser($this);
         }
 
         return $this;
@@ -263,8 +263,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->favorites->removeElement($favorite)) {
             // set the owning side to null (unless already changed)
-            if ($favorite->getUserId() === $this) {
-                $favorite->setUserId(null);
+            if ($favorite->getUser() === $this) {
+                $favorite->setUser(null);
             }
         }
 

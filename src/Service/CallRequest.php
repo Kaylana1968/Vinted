@@ -126,12 +126,25 @@ class CallRequest
         return $allArticle;
     }
 
-    public function AddFavorite(Article $article)
+    public function SwitchFavorite(Article $article)
     {
-        $favorite = new Favorite();
-        $favorite->setUser($this->security->getUser());
-        $favorite->setArticle($article);
-        $this->entityManager->persist($favorite);
+        $user = $this->security->getUser();
+
+        $favoriteList = $this->entityManager->getRepository(Favorite::class);
+        if ($favorite = $favoriteList->findOneBy([
+            'user' => $user,
+            'article' => $article
+        ])) { // if already favorited
+            $this->entityManager->remove($favorite);
+        } else {
+            $favorite = new Favorite();
+
+            $favorite->setUser($user);
+            $favorite->setArticle($article);
+
+            $this->entityManager->persist($favorite);
+        }
+
         $this->entityManager->flush();
     }
 

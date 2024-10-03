@@ -20,12 +20,15 @@
   <p>{{ article.description }}</p>
   <p>{{ article.category }}</p>
   <p>{{ article.price }} €</p>
-  
+
+{% if app.user != article.seller %}
   <div class="buttons">
     <a href={{ path('buy', {'id': article.id}) }}>Acheter</a>
     <a href={{ path('messageCategory',  {'receiverId': article.seller.id}) }}>Contacter le vendeur</a>
     <a href={{ path('add_favorite', {'article_id': article.id}) }}>💜</a>
   </div>
+{% endif %}
+
 </div>
 {% endblock %}
 

@@ -126,6 +126,10 @@ class MainController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
+        if ($this->getUser()->getId() == $receiverId) { // don't care this fucking error
+            return $this->redirectToRoute('message');
+        }
+
         $receiver = $this->callRequest->GetUser($receiverId);
         $messageAllList = $this->callRequest->GetMessage($receiver);
 
