@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\User;
+use App\Form\BuyFormType;
 use App\Form\FormSellType;
 use App\Service\CallRequest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -57,11 +59,12 @@ class MainController extends AbstractController
     }
 
     #[Route('/sell', name: 'sell')]
-    public function sell(Request $request): Response
+    public function sell(Request $request,EntityManagerInterface $entityManager ): Response
     {
         $sellArticle = new Article();
         $form = $this->createForm(FormSellType::class, $sellArticle);
         $form->handleRequest($request);
+
 
         return $this->render('main/sell.html.twig', [
             'form_sell' => $form,
@@ -79,10 +82,19 @@ class MainController extends AbstractController
     }
 
     #[Route('/buy', name: 'buy')]
-    public function buy(): Response
+    public function buy(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $buyUser = $this->getUser();
+        $form = $this->createForm(BuyFormType::class, $buyUser);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+
+        $entityManager->persist($buyUser);
+        $entityManager->flush();
+
         return $this->render('main/buy.html.twig', [
-            'controller_name' => 'MainController',
+            'buy_user' => $form,
         ]);
     }
 }
