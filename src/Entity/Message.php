@@ -28,8 +28,9 @@ class Message
     #[ORM\Column]
     private ?bool $seen = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ["default" => 0])]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
+
     public function __construct()
     {
         $this->date = new \DateTime();
