@@ -89,12 +89,22 @@ class MainController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
+        {
+            $entityManager->persist($buyUser);
+            $entityManager->flush();
 
-        $entityManager->persist($buyUser);
-        $entityManager->flush();
-
+            return $this->redirectToRoute('buy_sucess');
+        }
         return $this->render('main/buy.html.twig', [
             'buy_user' => $form,
+
         ]);
+        
+    }
+    #[Route('/buysucess', name: 'buy_sucess')]
+    public function buysucess(): Response
+    {
+        return $this->render('main/buysucess.html.twig');
     }
 }
+
