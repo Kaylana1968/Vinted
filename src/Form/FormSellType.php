@@ -38,7 +38,6 @@ class FormSellType extends AbstractType
                 ]])
             ->add('category', ChoiceType::class,[
                 'choices'=>[
-                    [
                         'Woman' => 'woman',
                         'Man' => 'man',
                     ],
@@ -49,7 +48,7 @@ class FormSellType extends AbstractType
                         'message' => 'Please choose a category',
                     ]),
                     ]
-                 ]])
+                 ])
             ->add('price', MoneyType::class,['label'=> 'Choose a price',
                 'constraints' => [
                 new Assert\NotBlank(['message' => 'Le prix doit être renseigné.']),
