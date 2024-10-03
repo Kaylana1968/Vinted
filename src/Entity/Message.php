@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MessageRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
@@ -26,6 +27,14 @@ class Message
 
     #[ORM\Column]
     private ?bool $seen = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ["default" => 0])]
+    private ?\DateTimeInterface $date = null;
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+        $this->seen = false;
+    }
 
     public function getId(): ?int
     {
@@ -76,6 +85,18 @@ class Message
     public function setSeen(bool $seen): static
     {
         $this->seen = $seen;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): static
+    {
+        $this->date = $date;
 
         return $this;
     }

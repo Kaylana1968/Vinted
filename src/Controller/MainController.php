@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
-use App\Entity\User;
+use App\Entity\Message;
+use App\Form\SendMessageType;
 use App\Form\FormSellType;
 use App\Service\CallRequest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -75,10 +76,41 @@ class MainController extends AbstractController
     #[Route('/message', name: 'message')]
     public function message(): Response
     {
-        $messageAllList = $this->callRequest->GetAllMessage();
+        $messagedUser = $this->callRequest->GetAllMessagedUser();
+
+        return $this->render('main/message_list.html.twig', [
+            "messaged_user" => $messagedUser
+        ]);
+    }
+
+    #[Route('/message/{receiverId}', name: 'messageCategory')]
+    public function messageCategory(
+        int $receiverId,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $receiver = $this->callRequest->GetUser($receiverId);
+        $messageAllList = $this->callRequest->GetMessage($receiver);
+
+        $message = new Message();
+        $form = $this->createForm(SendMessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $message->setSender($this->getUser());
+            $message->setReceiver($receiver);
+
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('messageCategory', [
+                'receiverId' => $receiverId,
+            ]);
+        }
 
         return $this->render('main/message.html.twig', [
             'all_message' => $messageAllList,
+            'send_message' => $form,
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Article;
+use App\Entity\Favorite;
 use App\Entity\Message;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,30 +18,39 @@ class CallRequest
         private Security $security
     ) {}
 
-    public function GetAllArticle ()
+    public function GetAllArticle()
     {
         $articleList = $this->entityManager->getRepository(Article::class);
         $allArticle = $articleList->findBy(['status' => 0]);
-        
+
         return $allArticle;
     }
 
-    public function GetAllArticleByCategory (string $category)
+    public function GetAllArticleByCategory(string $category)
     {
         $articleList = $this->entityManager->getRepository(Article::class);
         $allArticle = $articleList->findBy(['status' => 0, "category" => $category]);
-        
+
         return $allArticle;
     }
 
-    public function GetConnectedUser (int $user)
+    public function GetAllFavoris()
     {
-        $user = $this->security->getUser();
+        $favoriteList = $this->entityManager->getRepository(Favorite::class);
+        $allFavorite = $favoriteList->findBy(['status' => 0]);
 
-        return $user;
+        return $allFavorite;
     }
 
-    public function GetAllUser ()
+    public function getUser($userId)
+    {
+        $userList = $this->entityManager->getRepository(User::class);
+        $receiver = $userList->findOneBy(['id' => $userId]);
+
+        return $receiver;
+    }
+
+    public function GetAllUser()
     {
         $userList = $this->entityManager->getRepository(User::class);
         $allUser = $userList->findAll();
@@ -48,16 +58,42 @@ class CallRequest
         return $allUser;
     }
 
-    public function GetAllMessage()
+    public function GetAllMessagedUser()
     {
-        $user = $this->security->getUser();
+        $user = $this->security->getUser(); // connected user
 
-        $message = $this->entityManager->getRepository(Message::class);
-        $messageSenderList = $message->findBy(['sender' => $user]);
-        $messageReceiverList = $message->findBy(['receiver' => $user]);
-        $messageAllList = array_merge($messageSenderList, $messageReceiverList);
+        $messagedUser = array();
 
-        return $messageAllList;
+        $messageList = $this->entityManager->getRepository(Message::class);
+
+        $messageSenderList = $messageList->findBy(['sender' => $user]);
+        foreach ($messageSenderList as $message) {
+            $receiver = $message->getReceiver();
+            if (!in_array($receiver, $messagedUser)) {
+                array_push($messagedUser, $receiver);
+            }
+        }
+
+        $messageReceiverList = $messageList->findBy(['receiver' => $user]);
+        foreach ($messageReceiverList as $message) {
+            $sender = $message->getSender();
+            if (!in_array($sender, $messagedUser)) {
+                array_push($messagedUser, $sender);
+            }
+        }
+
+        return $messagedUser;
+    }
+
+    public function GetMessage($receiver)
+    {
+        $user = $this->security->getUser(); // connected user
+
+        $messageList = $this->entityManager->getRepository(Message::class);
+        $messageSenderList = $messageList->findBy(['sender' => $user, 'receiver' => $receiver]);
+        $messageReceiverList = $messageList->findBy(['receiver' => $user, 'sender' => $receiver]);
+
+        return array_merge($messageSenderList, $messageReceiverList);
     }
 
     public function GetSelledArticleFromUser ()
