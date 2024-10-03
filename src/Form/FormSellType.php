@@ -19,38 +19,42 @@ class FormSellType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('picture', FileType::class, ['label'=> 'Add a picture'])
-            ->add('title',TextType::class,['label'=> 'Add a title', 'constraints'=>[
-                new Assert\NotBlank (['message' => 'Le titre ne peut pas être vide.']),
+            ->add('picture', FileType::class, ['label' => 'Add a picture'])
+            ->add('title', TextType::class, ['label' => 'Add a title', 'constraints' => [
+                new Assert\NotBlank(['message' => 'Le titre ne peut pas être vide.']),
                 new Assert\Length([
                     'min' => 3,
                     'max' => 40,
                     'minMessage' => 'Le nom doit contenir au moins {{ limit }} caractères.',
                     'maxMessage' => 'Le nom ne peut pas dépasser {{ limit }} caractères.'
                 ]),
-                 ]])
-            ->add('description', TextareaType ::class, ['label'=> 'add a description of your article','constraints'=>[
-                new Assert\NotBlank (['message' => 'La description ne ne peut pas être vide.']),
+            ]])
+            ->add('description', TextareaType::class, ['label' => 'add a description of your article', 'constraints' => [
+                new Assert\NotBlank(['message' => 'La description ne ne peut pas être vide.']),
                 new Assert\Length([
                     'min' => 3,
                     'minMessage' => 'Le nom doit contenir au moins {{ limit }} caractères.',
                 ]),
-                ]])
-            ->add('category', ChoiceType::class,[
-                'choices'=>[
+            ]])
+            ->add(
+                'category',
+                ChoiceType::class,
+                [
+                    'choices' => [
                         'Woman' => 'woman',
                         'Man' => 'man',
                     ],
-                    ]
-                 ])
-            ->add('price', MoneyType::class,['label'=> 'Choose a price',
+                ]
+            )
+            ->add('price', MoneyType::class, [
+                'label' => 'Choose a price',
                 'constraints' => [
-                new Assert\NotBlank(['message' => 'Le prix doit être renseigné.']),
-                new Assert\Positive(['message' => 'Le prix doit être supérieur à 0.']),
-            ],
+                    new Assert\NotBlank(['message' => 'Le prix doit être renseigné.']),
+                    new Assert\Positive(['message' => 'Le prix doit être supérieur à 0.']),
+                ],
             ])
             ->add('Ajoutez', SubmitType::class)
-            ;         
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -58,5 +62,5 @@ class FormSellType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Article::class,
         ]);
-    }   
+    }
 }
