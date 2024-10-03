@@ -30,7 +30,7 @@ class Article
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
@@ -49,6 +49,7 @@ class Article
     public function __construct()
     {
         $this->favorites = new ArrayCollection();
+        $this->status = false;
     }
 
     public function getId(): ?int
@@ -130,7 +131,9 @@ class Article
 
     public function getSeller(): ?User
     {
+            
         return $this->seller;
+      
     }
 
     public function setSeller(?User $seller): static

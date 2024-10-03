@@ -8,6 +8,7 @@ use App\Form\SendMessageType;
 use App\Form\FormSellType;
 use App\Service\CallRequest;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,11 +63,22 @@ class MainController extends AbstractController
 
 
     #[Route('/sell', name: 'sell')]
-    public function sell(Request $request): Response
-    {
+    public function sell(
+        Request $request,
+        EntityManagerInterface $entityManager
+    )
+    {   
         $sellArticle = new Article();
         $form = $this->createForm(FormSellType::class, $sellArticle);
         $form->handleRequest($request);
+
+         if($form->isSubmitted()&& $form->isValid()){
+            $sellArticle-> setSeller($this->getUser());
+            $entityManager->persist($sellArticle);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('home');
+         }
 
         return $this->render('main/sell.html.twig', [
             'form_sell' => $form,

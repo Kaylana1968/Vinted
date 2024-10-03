@@ -41,12 +41,6 @@ class FormSellType extends AbstractType
                         'Woman' => 'woman',
                         'Man' => 'man',
                     ],
-                    'label' => 'Choose a category', 
-                'constraints' => [
-                    new Assert\Choice([
-                        'choices' => ['woman', 'man'],
-                        'message' => 'Please choose a category',
-                    ]),
                     ]
                  ])
             ->add('price', MoneyType::class,['label'=> 'Choose a price',
