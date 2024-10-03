@@ -18,7 +18,7 @@
         <img src={{ asset(article.picture) }} onerror="this.onerror=null;this.src='{{ article.picture }}';" alt={{article.title}}>
 
         {{article.description}}
-        {{article.price}}
+        {{article.price|number_format(2, '.', ',')}}€
         </a>
 
         {% endfor %}
