@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Article;
+use App\Entity\Favorite;
 use App\Entity\Message;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,23 +18,31 @@ class CallRequest
         private Security $security
     ) {}
 
-    public function GetAllArticle ()
+    public function GetAllArticle()
     {
         $articleList = $this->entityManager->getRepository(Article::class);
         $allArticle = $articleList->findBy(['status' => 0]);
-        
+
         return $allArticle;
     }
 
-    public function GetAllArticleByCategory (string $category)
+    public function GetAllArticleByCategory(string $category)
     {
         $articleList = $this->entityManager->getRepository(Article::class);
         $allArticle = $articleList->findBy(['status' => 0, "category" => $category]);
-        
+
         return $allArticle;
     }
 
-    public function GetAllUser ()
+    public function GetAllFavoris()
+    {
+        $favoriteList = $this->entityManager->getRepository(Favorite::class);
+        $allFavorite = $favoriteList->findBy(['status' => 0]);
+
+        return $allFavorite;
+    }
+
+    public function GetAllUser()
     {
         $userList = $this->entityManager->getRepository(User::class);
         $allUser = $userList->findAll();

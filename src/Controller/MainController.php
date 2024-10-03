@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Message;
+use App\Form\SendMessageType;
 use App\Form\FormSellType;
 use App\Service\CallRequest;
 use Doctrine\ORM\EntityManagerInterface;
@@ -69,12 +71,52 @@ class MainController extends AbstractController
     }
 
     #[Route('/message', name: 'message')]
-    public function message(): Response
+    public function message(Request $request, EntityManagerInterface $entityManager): Response
     {
         $messageAllList = $this->callRequest->GetAllMessage();
 
+        $message = new Message();
+        $form = $this->createForm(SendMessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $message->setSender($this->getUser());
+            $message->setReceiver($this->getUser());
+
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'You can view your article or add another article');
+        }
+
         return $this->render('main/message.html.twig', [
             'all_message' => $messageAllList,
+            'send_message' => $form,
+        ]);
+    }
+
+    #[Route('/message/{receiver}', name: 'messageCategory')]
+    public function messageCategory(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $messageAllList = $this->callRequest->GetAllMessage();
+
+        $message = new Message();
+        $form = $this->createForm(SendMessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $message->setSender($this->getUser());
+            $message->setReceiver($this->getUser());
+
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'You can view your article or add another article');
+        }
+
+        return $this->render('main/message.html.twig', [
+            'all_message' => $messageAllList,
+            'send_message' => $form,
         ]);
     }
 

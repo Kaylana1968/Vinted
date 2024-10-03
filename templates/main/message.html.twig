@@ -23,7 +23,10 @@
         <div class="container-2">
             <div class="content">{{message.content}}</div>
         </div>
+        <div>{{message.date|date("d-m-Y H:i")}}</div>
         <div class="receiver">{{message.receiver.name}}</div>
+       {{form_start(send_message)}}
+       {{form_end(send_message)}}
     </div>
 
     {% endfor %}
