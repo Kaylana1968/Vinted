@@ -9,7 +9,7 @@
 
 {% for user in messaged_user %}
 <div class="container">
-    <a href={{ path('message', {'receiver': user.id}) }}>
+    <a href={{ path('messageCategory', {'receiverId': user.id}) }}>
         <div>{{user.name}}</div>
     </a>
 </div>

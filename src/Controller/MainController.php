@@ -80,10 +80,14 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/message/{receiver}', name: 'messageCategory')]
-    public function messageCategory(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $messageAllList = $this->callRequest->GetAllMessage();
+    #[Route('/message/{receiverId}', name: 'messageCategory')]
+    public function messageCategory(
+        int $receiverId,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $receiver = $this->callRequest->GetUser($receiverId);
+        $messageAllList = $this->callRequest->GetMessage($receiver);
 
         $message = new Message();
         $form = $this->createForm(SendMessageType::class, $message);
@@ -91,12 +95,14 @@ class MainController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $message->setSender($this->getUser());
-            $message->setReceiver($this->getUser());
+            $message->setReceiver($receiver);
 
             $entityManager->persist($message);
             $entityManager->flush();
 
-            $this->addFlash('success', 'You can view your article or add another article');
+            return $this->redirectToRoute('messageCategory', [
+                'receiverId' => $receiverId,
+            ]);
         }
 
         return $this->render('main/message.html.twig', [

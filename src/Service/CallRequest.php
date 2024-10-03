@@ -42,6 +42,14 @@ class CallRequest
         return $allFavorite;
     }
 
+    public function getUser($userId)
+    {
+        $userList = $this->entityManager->getRepository(User::class);
+        $receiver = $userList->findOneBy(['id' => $userId]);
+
+        return $receiver;
+    }
+
     public function GetAllUser()
     {
         $userList = $this->entityManager->getRepository(User::class);
@@ -52,33 +60,39 @@ class CallRequest
 
     public function GetAllMessagedUser()
     {
-        $user = $this->security->getUser();
+        $user = $this->security->getUser(); // connected user
 
-        $messagedUser = [];
+        $messagedUser = array();
+
         $messageList = $this->entityManager->getRepository(Message::class);
 
         $messageSenderList = $messageList->findBy(['sender' => $user]);
         foreach ($messageSenderList as $message) {
-            array_push($messagedUser, $message->getReceiver());
+            $receiver = $message->getReceiver();
+            if (!in_array($receiver, $messagedUser)) {
+                array_push($messagedUser, $receiver);
+            }
         }
 
         $messageReceiverList = $messageList->findBy(['receiver' => $user]);
         foreach ($messageReceiverList as $message) {
-            array_push($messagedUser, $message->getSender());
+            $sender = $message->getSender();
+            if (!in_array($sender, $messagedUser)) {
+                array_push($messagedUser, $sender);
+            }
         }
 
-        return array_unique($messagedUser);
+        return $messagedUser;
     }
 
-    public function GetAllMessage()
+    public function GetMessage($receiver)
     {
-        $user = $this->security->getUser();
+        $user = $this->security->getUser(); // connected user
 
-        $message = $this->entityManager->getRepository(Message::class);
-        $messageSenderList = $message->findBy(['sender' => $user]);
-        $messageReceiverList = $message->findBy(['receiver' => $user]);
-        $messageAllList = array_merge($messageSenderList, $messageReceiverList);
+        $messageList = $this->entityManager->getRepository(Message::class);
+        $messageSenderList = $messageList->findBy(['sender' => $user, 'receiver' => $receiver]);
+        $messageReceiverList = $messageList->findBy(['receiver' => $user, 'sender' => $receiver]);
 
-        return $messageAllList;
+        return array_merge($messageSenderList, $messageReceiverList);
     }
 }
