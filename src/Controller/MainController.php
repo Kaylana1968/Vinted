@@ -69,12 +69,10 @@ class MainController extends AbstractController
 
          if($form->isSubmitted()&& $form->isValid()){
             $sellArticle-> setSeller($this->getUser());
-
             $entityManager->persist($sellArticle);
             $entityManager->flush();
 
-            $this->addFlash('success', 'You can view your article or add another article');
-            return $this->redirectToRoute('sell');
+            return $this->redirectToRoute('home');
          }
 
         return $this->render('main/sell.html.twig', [
