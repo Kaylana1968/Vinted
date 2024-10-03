@@ -10,6 +10,18 @@
 
 <div class="example-wrapper">
 
+<div class="example-wrapper">
+
+        {% for favorite in favorites %}
+
+        <a href="{{ path('article', {'id': favorite.article.id}) }}">
+        <h1>{{favorite.article.title}}</h1>
+        <img src = {{favorite.article.picture}}>
+        {{favorite.article.description}}
+        {{favorite.article.price}}
+        </a>
+
+        {% endfor %}
 
 </div>
 {% endblock %}

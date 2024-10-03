@@ -46,8 +46,14 @@ class MainController extends AbstractController
     {
         $article = $this->entityManager->getRepository(Article::class)->find($id);
 
+        $callRequest = $this->callRequest;
+
+        $user = $this->getUser();
+
         return $this->render('main/article.html.twig', [
-            'article' => $article
+            'article' => $article,
+            'call_request' => $callRequest,
+            'user' => $user
         ]);
     }
 
@@ -168,8 +174,10 @@ class MainController extends AbstractController
     #[Route(path: '/favorite', name: 'favorite')]
     public function favorite(): Response
     {
+        $allFavorite = $this->callRequest->GetAllFavoris();
+
         return $this->render('main/favorite.html.twig', [
-            'controller_name' => 'MainController',
+            'favorites' => $allFavorite
         ]);
     }
 
