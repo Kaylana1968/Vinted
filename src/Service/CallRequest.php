@@ -52,7 +52,7 @@ class CallRequest
         return $allFavorite;
     }
 
-    public function getUser($userId)
+    public function GetUser($userId)
     {
         $userList = $this->entityManager->getRepository(User::class);
         $receiver = $userList->findOneBy(['id' => $userId]);
@@ -142,7 +142,18 @@ class CallRequest
             $favorite->setUser($user);
             $favorite->setArticle($article);
 
+            $message = new Message();
+            $message->setSender($user);
+            $message->setReceiver($article->getSeller());
+            $message->setContent(
+                'User ' .
+                $user->getName() .
+                ' has added to favorites your product ' .
+                $article->getTitle()
+            );
+
             $this->entityManager->persist($favorite);
+            $this->entityManager->persist($message);
         }
 
         $this->entityManager->flush();

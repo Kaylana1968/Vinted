@@ -155,16 +155,43 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/buy', name: 'buy')]
-    public function buy(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $buyUser = $this->getUser();
-        $form = $this->createForm(BuyFormType::class, $buyUser);
+    #[Route('/buy/{id}', name: 'buy')]
+    public function buy(
+        int $id,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $user = $this->getUser();
+        $article = $this->callRequest->GetArticle($id);
+
+        if ($article->getSeller() == $user) {
+            return $this->redirectToRoute('home');
+        }
+
+        $form = $this->createForm(BuyFormType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $entityManager->persist($buyUser);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $article
+                ->setStatus(true)
+                ->setBuyer($user);
+
+            $message = new Message();
+            $message
+                ->setSender($user)
+                ->setReceiver($article->getSeller())
+                ->setContent(
+                    "User " .
+                    $user->getName() .
+                    " has bought your product " .
+                    $article->getTitle() .
+                    "."
+                );
+
+            $entityManager->persist($user);
+            $entityManager->persist($article);
+            $entityManager->persist($message);
+
             $entityManager->flush();
 
             return $this->redirectToRoute('buy_sucess');
@@ -173,7 +200,6 @@ class MainController extends AbstractController
             'buy_user' => $form,
 
         ]);
-        
     }
     #[Route('/buysucess', name: 'buy_sucess')]
     public function buysucess(): Response
@@ -211,4 +237,3 @@ class MainController extends AbstractController
         ]);
     }
 }
-
