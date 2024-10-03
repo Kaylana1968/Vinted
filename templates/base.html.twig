@@ -37,6 +37,14 @@
                 <li>
                     <a href={{ path('home') }}> Vinted </a>
                 </li>
+            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li>
+                    <a href={{ path('login') }}> Login </a>
+                </li>
+                <li>
+                    <a href={{ path('register') }}> Register </a>
+                </li>
+            {% else %}
                 <li>
                     <a href={{ path('sell') }}> Sell </a>
                 </li>
@@ -46,14 +54,6 @@
                 <li>
                     <a href={{ path('profile') }}> Profile </a>
                 </li>
-            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-                <li>
-                    <a href={{ path('login') }}> Login </a>
-                </li>
-                <li>
-                    <a href={{ path('register') }}> Register </a>
-                </li>
-            {% else %}
                 <li>
                     <a href={{ path('logout') }}> Logout </a>
                 </li>
