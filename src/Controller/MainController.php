@@ -71,27 +71,12 @@ class MainController extends AbstractController
     }
 
     #[Route('/message', name: 'message')]
-    public function message(Request $request, EntityManagerInterface $entityManager): Response
+    public function message(): Response
     {
-        $messageAllList = $this->callRequest->GetAllMessage();
+        $messagedUser = $this->callRequest->GetAllMessagedUser();
 
-        $message = new Message();
-        $form = $this->createForm(SendMessageType::class, $message);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $message->setSender($this->getUser());
-            $message->setReceiver($this->getUser());
-
-            $entityManager->persist($message);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'You can view your article or add another article');
-        }
-
-        return $this->render('main/message.html.twig', [
-            'all_message' => $messageAllList,
-            'send_message' => $form,
+        return $this->render('main/message_list.html.twig', [
+            "messaged_user" => $messagedUser
         ]);
     }
 

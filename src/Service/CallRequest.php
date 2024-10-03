@@ -50,6 +50,26 @@ class CallRequest
         return $allUser;
     }
 
+    public function GetAllMessagedUser()
+    {
+        $user = $this->security->getUser();
+
+        $messagedUser = [];
+        $messageList = $this->entityManager->getRepository(Message::class);
+
+        $messageSenderList = $messageList->findBy(['sender' => $user]);
+        foreach ($messageSenderList as $message) {
+            array_push($messagedUser, $message->getReceiver());
+        }
+
+        $messageReceiverList = $messageList->findBy(['receiver' => $user]);
+        foreach ($messageReceiverList as $message) {
+            array_push($messagedUser, $message->getSender());
+        }
+
+        return array_unique($messagedUser);
+    }
+
     public function GetAllMessage()
     {
         $user = $this->security->getUser();

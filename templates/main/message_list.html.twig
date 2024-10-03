@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message{% endblock %}
+
+{% block body %}
+<style>
+    .container{border: 3px solid black; padding: 4px 8px;}
+</style>
+
+{% for user in messaged_user %}
+<div class="container">
+    <a href={{ path('message', {'receiver': user.id}) }}>
+        <div>{{user.name}}</div>
+    </a>
+</div>
+
+{% endfor %}
+
+{% endblock %}
