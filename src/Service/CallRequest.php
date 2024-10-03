@@ -18,6 +18,14 @@ class CallRequest
         private Security $security
     ) {}
 
+    public function GetArticle(int $articleId)
+    {
+        $articleList = $this->entityManager->getRepository(Article::class);
+        $article = $articleList->findOneBy(['id' => $articleId]);
+
+        return $article;
+    }
+
     public function GetAllArticle()
     {
         $articleList = $this->entityManager->getRepository(Article::class);
@@ -36,8 +44,10 @@ class CallRequest
 
     public function GetAllFavoris()
     {
+        $user = $this->security->getUser();
+
         $favoriteList = $this->entityManager->getRepository(Favorite::class);
-        $allFavorite = $favoriteList->findBy(['status' => 0]);
+        $allFavorite = $favoriteList->findBy(["user" => $user]);
 
         return $allFavorite;
     }
@@ -114,5 +124,14 @@ class CallRequest
         $allArticle = $articleList->findBy(['status' => 1, "buyer" => $user]);
         
         return $allArticle;
+    }
+
+    public function AddFavorite (Article $article)
+    {
+        $favorite = new Favorite();
+        $favorite->setUser($this->security->getUser());
+        $favorite->setArticle($article);
+        $this->entityManager->persist($favorite);
+        $this->entityManager->flush();
     }
 }
