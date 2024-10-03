@@ -46,6 +46,7 @@ class Article
     public function __construct()
     {
         $this->favorites = new ArrayCollection();
+        $this->status = false;
     }
 
     public function getId(): ?int
