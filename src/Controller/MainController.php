@@ -13,23 +13,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class MainController extends AbstractController
 {
     public function __construct(
         private CallRequest $callRequest,
         private EntityManagerInterface $entityManager
     ) {}
-
-    #[Route('/', name: 'home')]
-    public function home(): Response
-    {
-        $allArticle = $this->callRequest->GetAllArticle();
-
-        return $this->render('main/home.html.twig', [
-            'all_article' => $allArticle
-        ]);
-    }
 
     #[Route('/category/{category}', name: 'category')]
     public function category(string $category): Response

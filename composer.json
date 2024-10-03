@@ -76,6 +76,7 @@
     },
     "scripts": {
         "start": "symfony server:start -d --no-tls",
+        "stop": "symfony server:stop",
         "update:db": "symfony console doctrine:schema:update -f",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
