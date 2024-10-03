@@ -5,10 +5,10 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\Message;
 use App\Form\SendMessageType;
+use App\Form\BuyFormType;
 use App\Form\FormSellType;
 use App\Service\CallRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -140,11 +140,29 @@ class MainController extends AbstractController
     }
 
     #[Route('/buy', name: 'buy')]
-    public function buy(): Response
+    public function buy(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $buyUser = $this->getUser();
+        $form = $this->createForm(BuyFormType::class, $buyUser);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $entityManager->persist($buyUser);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('buy_sucess');
+        }
         return $this->render('main/buy.html.twig', [
-            'controller_name' => 'MainController',
+            'buy_user' => $form,
+
         ]);
+        
+    }
+    #[Route('/buysucess', name: 'buy_sucess')]
+    public function buysucess(): Response
+    {
+        return $this->render('main/buysucess.html.twig');
     }
 
     #[Route(path: '/favorite', name: 'favorite')]
@@ -175,3 +193,4 @@ class MainController extends AbstractController
         ]);
     }
 }
+
