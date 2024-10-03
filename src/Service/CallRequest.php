@@ -149,7 +149,8 @@ class CallRequest
                 'User ' .
                 $user->getName() .
                 ' has added to favorites your product ' .
-                $article->getTitle()
+                $article->getTitle() .
+                '.'
             );
 
             $this->entityManager->persist($favorite);
