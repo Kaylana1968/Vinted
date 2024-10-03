@@ -48,9 +48,12 @@ class MainController extends AbstractController
 
         $callRequest = $this->callRequest;
 
+        $user = $this->getUser();
+
         return $this->render('main/article.html.twig', [
             'article' => $article,
-            'call_request' => $callRequest
+            'call_request' => $callRequest,
+            'user' => $user
         ]);
     }
 
