@@ -59,6 +59,20 @@ class MainController extends AbstractController
         ]);
     }
 
+    #[Route('/receipts', name: 'receipts')]
+    public function receipts(): Response
+    {
+        $user = $this->getUser();
+        $soldArticle = $this->callRequest->GetSoldArticle();
+        $receipts = $this->callRequest->GetReceipts($soldArticle);
+
+        return $this->render('main/receipts.html.twig', [
+            'user' => $user,
+            'sold_article' => $soldArticle,
+            'receipts' => $receipts
+        ]);
+    }
+
 
     #[Route('/sell', name: 'sell')]
     public function sell(

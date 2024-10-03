@@ -106,32 +106,52 @@ class CallRequest
         return array_merge($messageSenderList, $messageReceiverList);
     }
 
-    public function GetSelledArticleFromUser ()
+    public function GetSelledArticleFromUser()
     {
         $user = $this->security->getUser();
 
         $articleList = $this->entityManager->getRepository(Article::class);
         $allArticle = $articleList->findBy(['status' => 1, "seller" => $user]);
-        
+
         return $allArticle;
     }
 
-    public function GetBuyedArticleFromUser ()
+    public function GetBuyedArticleFromUser()
     {
         $user = $this->security->getUser();
 
         $articleList = $this->entityManager->getRepository(Article::class);
         $allArticle = $articleList->findBy(['status' => 1, "buyer" => $user]);
-        
+
         return $allArticle;
     }
 
-    public function AddFavorite (Article $article)
+    public function AddFavorite(Article $article)
     {
         $favorite = new Favorite();
         $favorite->setUser($this->security->getUser());
         $favorite->setArticle($article);
         $this->entityManager->persist($favorite);
         $this->entityManager->flush();
+    }
+
+    public function GetSoldArticle()
+    {
+        $user = $this->security->getUser();
+
+        $articleList = $this->entityManager->getRepository(Article::class);
+        $soldArticle = $articleList->findBy(["seller" => $user, "status" => 1]);
+
+        return $soldArticle;
+    }
+
+    public function GetReceipts(array $soldArticle)
+    {
+        $sum = 0;
+        foreach ($soldArticle as $article) {
+            $sum += $article->getPrice();
+        }
+
+        return $sum;
     }
 }

@@ -155,7 +155,7 @@ class Article
     {
         if (!$this->favorites->contains($favorite)) {
             $this->favorites->add($favorite);
-            $favorite->setArticleId($this);
+            $favorite->setArticle($this);
         }
 
         return $this;
@@ -165,8 +165,8 @@ class Article
     {
         if ($this->favorites->removeElement($favorite)) {
             // set the owning side to null (unless already changed)
-            if ($favorite->getArticleId() === $this) {
-                $favorite->setArticleId(null);
+            if ($favorite->getArticle() === $this) {
+                $favorite->setArticle(null);
             }
         }
 
