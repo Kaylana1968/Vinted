@@ -74,6 +74,7 @@ class MainController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'You can view your article or add another article');
+            return $this->redirectToRoute('sell');
          }
 
         return $this->render('main/sell.html.twig', [

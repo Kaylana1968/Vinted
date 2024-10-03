@@ -5,21 +5,13 @@
 {% block body %}
     <h1> Vendez votre article !</h1>
     {{form(form_sell)}}
+    {% for type, messages in app.flashes %}
+    <div class="alert alert-{{ type }}">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endfor %}
+       
 
-
-    {#<form action="" methode="post">
-        <input type="text" name="title" placeholder="title">
-        <label>Category
-        <select name="category">
-            <option value="">Please select a category</option>
-            <option value="man">Man</option>
-            <option value="woman">Woman</option>  
-        </select>
-        </label>
-        <textarea name="description" placeholder="Description of your article"></textarea
-        <input type ="file" name="picture" placeholder="picture">
-        <input type="text" name="price" placeholder="price">
-        <button type="submit">Ajoutez</button>
-    <form>
-    #}
+    </div>
 {% endblock %}
