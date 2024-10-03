@@ -85,4 +85,12 @@ class MainController extends AbstractController
             'controller_name' => 'MainController',
         ]);
     }
+
+    #[Route(path: '/favorite', name: 'favorite')]
+    public function favorite(): Response
+    {
+        return $this->render('main/favorite.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
 }
