@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>"> {% block stylesheets %}{% endblock %}
+
+		<style>
+			table,
+			tr,
+			td,
+			th {
+				border-collapse: collapse;
+				border: 1px solid black;
+				padding: 4px 8px;
+				text-align: center;
+                font-size: 32px;
+			}
+			tr {
+				height: 50px;
+			}
+			th {
+				width: 600px;
+			}
+			img {
+				height: 50px;
+			}
+		</style>
+
+		{% block javascripts %}
+			{% block importmap %}
+				{{ importmap('app') }}
+			{% endblock %}
+		{% endblock %}
+	</head>
+
+	<body>
+		{% block body %}
+			<div class="example-wrapper">
+				<h1>Receipts of
+					{{ user.name }}</h1>
+
+				<table>
+					<tr>
+						<th>title</th>
+						<th>price</th>
+					</tr>
+
+					{% for article in sold_article %}
+
+						<tr>
+							<td>
+								<h5>
+									{{article.title}}
+								</h5>
+							</td>
+							<td>
+								<strong>
+									{{article.price}} €
+								</strong>
+							</td>
+						</tr>
+
+					{% endfor %}
+
+					<tr>
+						<td></td>
+						<td>
+							<strong>{{receipts}} €</strong>
+						</td>
+					</tr>
+
+				</table>
+			</div>
+		{% endblock %}
+	</body>
+</html>

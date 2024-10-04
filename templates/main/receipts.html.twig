@@ -33,6 +33,19 @@
 		img {
 			height: 50px;
 		}
+				.pdf-button {
+			display: inline-block;
+			padding: 10px 15px;
+			background-color: #007bff; /* Bootstrap primary color */
+			color: white;
+			text-decoration: none;
+			border-radius: 5px;
+			text-align: center;
+			margin-top: 20px; /* Adding some space above the button */
+		}
+		.pdf-button:hover {
+			background-color: #0056b3; /* Darker shade on hover */
+		}
 	</style>
 
 	<div class="example-wrapper">
@@ -73,7 +86,8 @@
 					<strong>{{receipts}}</strong>
 				</td>
 			</tr>
-
 		</table>
+
+		<a class="pdf-button" href={{path("pdf_generate")}}>PDF</a>
 	</div>
 {% endblock %}
