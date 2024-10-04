@@ -14,14 +14,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Twig\Environment;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class MainController extends AbstractController
 {
+    private $notificationCount;
+
     public function __construct(
         private CallRequest $callRequest,
-        private EntityManagerInterface $entityManager
-    ) {}
+        private EntityManagerInterface $entityManager,
+        private Environment $twig,
+    ) {
+        $this->notificationCount = $this->callRequest->GetNotificationCount();
+
+        $this->twig->addGlobal('notification_count', $this->notificationCount);
+    }
 
     #[Route('/category/{category}', name: 'category')]
     public function category(string $category): Response
@@ -132,6 +140,9 @@ class MainController extends AbstractController
 
         $receiver = $this->callRequest->GetUser($receiverId);
         $messageAllList = $this->callRequest->GetMessage($receiver);
+        $seenAdded = $this->callRequest->setMessageSeen($messageAllList);
+
+        $this->twig->addGlobal('notification_count', $this->notificationCount - $seenAdded);
 
         $message = new Message();
         $form = $this->createForm(SendMessageType::class, $message);
@@ -182,10 +193,10 @@ class MainController extends AbstractController
                 ->setReceiver($article->getSeller())
                 ->setContent(
                     "User " .
-                    $user->getName() .
-                    " has bought your product " .
-                    $article->getTitle() .
-                    "."
+                        $user->getName() .
+                        " has bought your product " .
+                        $article->getTitle() .
+                        "."
                 );
 
             $entityManager->persist($user);

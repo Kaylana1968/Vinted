@@ -160,6 +160,34 @@ class CallRequest
         $this->entityManager->flush();
     }
 
+    public function GetNotificationCount()
+    {
+        $user = $this->security->getUser();
+
+        $messageList = $this->entityManager->getRepository(Message::class);
+        $unreadMessage = $messageList->findBy(["receiver" => $user, "seen" => false]);
+
+        return count($unreadMessage);
+    }
+
+    public function SetMessageSeen(array $messageList)
+    {
+        $user = $this->security->getUser();
+
+        $seenAdded = 0;
+        foreach ($messageList as $message) {
+            if ($message->getReceiver() == $user) {
+                $seenAdded++;
+                $message->setSeen(true);
+                $this->entityManager->persist($message);
+            }
+        }
+
+        $this->entityManager->flush();
+
+        return $seenAdded;
+    }
+
     public function GetSoldArticle()
     {
         $user = $this->security->getUser();

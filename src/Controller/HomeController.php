@@ -6,13 +6,21 @@ use App\Service\CallRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Twig\Environment;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'home')]
-    public function home(CallRequest $callRequest): Response
+    public function __construct(private CallRequest $callRequest, Environment $twig)
     {
-        $allArticle = $callRequest->GetAllArticle();
+        $notificationCount = $this->callRequest->GetNotificationCount();
+
+        $twig->addGlobal('notification_count', $notificationCount);
+    }
+
+    #[Route('/', name: 'home')]
+    public function home(): Response
+    {
+        $allArticle = $this->callRequest->GetAllArticle();
 
         return $this->render('main/home.html.twig', [
             'all_article' => $allArticle
