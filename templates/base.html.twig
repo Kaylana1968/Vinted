@@ -1,87 +1,107 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>
-			{% block title %}Welcome!
-			{% endblock %}
-		</title>
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>"> {% block stylesheets %}{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}Welcome!
+        {% endblock %}
+    </title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    {% block stylesheets %}{% endblock %}
 
-		<style>
-			header {
-				background: lightgray;
-				padding: 4px 0;
-			}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
 
-			ul {
-				display: flex;
-				justify-content: space-evenly;
-				list-style-type: none;
-			}
+        header {
+            background: #f0f0f0; /* Couleur de fond légèrement plus sombre */
+            padding: 15px 0; /* Espacement supérieur et inférieur */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Légère ombre */
+        }
 
-			a {
-				color: purple;
-				text-decoration: none;
-			}
-		</style>
+        nav {
+            max-width: 1200px; /* Largeur maximale du conteneur */
+            margin: 0 auto; /* Centre le conteneur */
+            padding: 0 20px; /* Espacement latéral */
+        }
 
-		{% block javascripts %}
-			{% block importmap %}
-				{{ importmap('app') }}
-			{% endblock %}
-		{% endblock %}
-	</head>
+        ul {
+            display: flex; /* Flexbox pour un alignement horizontal */
+            justify-content: space-around; /* Espacement égal entre les éléments */
+            list-style-type: none; /* Pas de puces */
+            padding: 0; /* Supprime le padding par défaut */
+            margin: 0; /* Supprime la marge par défaut */
+        }
 
-	<body>
-		<header>
-			<nav>
-				<ul>
-					<li>
-						<a href={{ path('home') }}>
-							Vinted
-						</a>
-					</li>
-					{% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-						<li>
-							<a href={{ path('login') }}>
-								Login
-							</a>
-						</li>
-						<li>
-							<a href={{ path('register') }}>
-								Register
-							</a>
-						</li>
-					{% else %}
-						<li>
-							<a href={{ path('sell') }}>
-								Sell
-							</a>
-						</li>
-						<li>
-							<a href={{ path('message') }}>
-								Message
-								{% if notification_count > 0 %}
-									({{notification_count}})
-								{% endif %}
-							</a>
-						</li>
-						<li>
-							<a href={{ path('profile') }}>
-								Profile
-							</a>
-						</li>
-						<li>
-							<a href={{ path('logout') }}>
-								Logout
-							</a>
-						</li>
-					{% endif %}
-				</ul>
-			</nav>
-		</header>
+        /* Styles des liens de navigation */
+        .nav-link {
+            font-size: 18px; /* Taille de la police légèrement plus grande */
+            color: #6f42c1; /* Couleur violette */
+            text-decoration: none; /* Supprime le soulignement */
+            padding: 12px 20px; /* Espacement autour du lien */
+            border-radius: 5px; /* Coins arrondis */
+            transition: background-color 0.3s, color 0.3s; /* Effets de transition */
+        }
 
-		{% block body %}{% endblock %}
-	</body>
+        .nav-link:hover {
+            background-color: #6f42c1; /* Changement de fond au survol */
+            color: white; /* Changement de couleur du texte au survol */
+        }
+
+        .notification {
+            font-weight: bold; /* Texte en gras pour les notifications */
+            color: red; /* Couleur rouge pour les notifications */
+        }
+    </style>
+
+    {% block javascripts %}
+        {% block importmap %}
+            {{ importmap('app') }}
+        {% endblock %}
+    {% endblock %}
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li>
+                    <a class="nav-link" href={{ path('home') }}>Vinted</a>
+                </li>
+                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li>
+                        <a class="nav-link" href={{ path('login') }}>Login</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href={{ path('register') }}>Register</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a class="nav-link" href={{ path('sell') }}>Sell</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href={{ path('message') }}>Message
+                            {% if notification_count > 0 %}
+                                <span class="notification">({{ notification_count }})</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href={{ path('profile') }}>Profile</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href={{ path('logout') }}>Logout</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    {% block body %}{% endblock %}
+</body>
 </html>
+

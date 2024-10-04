@@ -1,34 +1,94 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Selled
-{% endblock %}
+{% block title %}My Product{% endblock %}
 
 {% block body %}
 	<style>
 		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
+			margin: 1.5em auto;
+			max-width: 900px;
 			width: 95%;
-			font: 18px / 1.5 sans-serif;
+			font-family: 'Arial', sans-serif;
+			color: #333;
 		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
+
+		/* Container pour chaque carte */
+		.card {
+			display: flex;
+			align-items: center;
+			background: #f8f9fa;
+			margin-bottom: 15px;
+			padding: 15px;
+			border-radius: 8px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			transition: box-shadow 0.3s ease-in-out;
 		}
+
+		.card:hover {
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+		}
+
+		/* Image dans la carte */
+		.card img {
+			width: 150px;
+			height: 100px;
+			border-radius: 6px;
+			object-fit: cover;
+			margin-right: 20px;
+		}
+
+		/* Informations de l'article */
+		.card-info {
+			flex: 1;
+		}
+
+		.card-info h1 {
+			font-size: 20px;
+			color: #007bff;
+			margin: 0 0 10px;
+		}
+
+		.card-info p {
+			font-size: 16px;
+			color: #6c757d;
+			margin: 0 0 10px;
+		}
+
+		.card-info .price {
+			font-size: 18px;
+			color: #28a745;
+			font-weight: bold;
+		}
+
+		/* Liens des articles */
+		.card a {
+			text-decoration: none;
+			color: inherit;
+		}
+
+		.card a:hover h1 {
+			color: #0056b3;
+		}
+
 	</style>
 
 	<div class="example-wrapper">
-
-		{% for article in selledArticle %}
-
-			<a href="{{ path('article', {'id': article.id}) }}">
-				<h1>{{article.title}}</h1>
-				<img src={{article.picture}}>
-				{{article.description}}
-				{{article.price}}
-			</a>
-
-		{% endfor %}
-
+		<h1>Your Product</h1>
+		{% if selledArticle|length > 0 %}
+			{% for article in selledArticle %}
+				<a href="{{ path('article', {'id': article.id}) }}" class="card">
+					<img src="{{ article.picture }}" alt="{{ article.title }}">
+					<div class="card-info">
+						<h1>{{ article.title }}</h1>
+						<p>{{ article.description }}</p>
+						<p class="price">{{ article.price }}€</p>
+					</div>
+				</a>
+			{% endfor %}
+		{% else %}
+			<p>You currently have no articles for sale.</p>
+		{% endif %}
 	</div>
 {% endblock %}
+
+
