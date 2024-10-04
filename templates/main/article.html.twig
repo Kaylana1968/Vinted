@@ -1,34 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Article{% endblock %}
-
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    .buttons { margin-top: 20px; }
-    .buttons a { margin-right: 10px; padding: 10px 15px; background-color: #007BFF; color: white; border: none; cursor: pointer; }
-    .buttons a:last-child { background-color: #28A745; }
-    .buttons a:hover { opacity: 0.8; }
-</style>
-
-<div class="example-wrapper">
-  <h1>{{ article.title }}</h1>
-
-  <img src={{ asset(article.picture) }} onerror="this.onerror=null;this.src='{{ article.picture }}';" alt={{article.title}}>
-
-  <p>{{ article.description }}</p>
-  <p>{{ article.category }}</p>
-  <p>{{ article.price }} €</p>
-
-{% if app.user != article.seller %}
-  <div class="buttons">
-    <a href={{ path('buy', {'id': article.id}) }}>Acheter</a>
-    <a href={{ path('messageCategory',  {'receiverId': article.seller.id}) }}>Contacter le vendeur</a>
-    <a href={{ path('add_favorite', {'article_id': article.id}) }}>💜</a>
-  </div>
-{% endif %}
-
-</div>
+{% block title %}Article
 {% endblock %}
 
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+		.buttons {
+			margin-top: 20px;
+		}
+		.buttons a {
+			margin-right: 10px;
+			padding: 10px 15px;
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			cursor: pointer;
+		}
+		.buttons a:last-child {
+			background-color: #28A745;
+		}
+		.buttons a:hover {
+			opacity: 0.8;
+		}
+	</style>
+
+	<div class="example-wrapper">
+		<h1>{{ article.title }}</h1>
+
+		<img src={{ asset(article.picture) }} onerror="this.onerror=null;this.src='{{ article.picture }}';" alt={{article.title}}>
+
+		<p>{{ article.description }}</p>
+		<p>{{ article.category }}</p>
+		<p>{{ article.price }}
+			€</p>
+
+		{% if app.user != article.seller %}
+			<div class="buttons">
+				<a href={{ path('buy', {'id': article.id} ) }}>Acheter</a>
+				<a href={{ path('messageCategory', {'receiverId': article.seller.id} ) }}>Contacter le vendeur</a>
+				<a href={{ path('add_favorite', {'article_id': article.id} ) }}>💜</a>
+			</div>
+		{% endif %}
+
+	</div>
+{% endblock %}

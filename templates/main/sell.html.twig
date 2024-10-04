@@ -1,74 +1,92 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sell{% endblock %}
+{% block title %}Sell
+{% endblock %}
 
 {% block body %}
 
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
 
-    .example-wrapper {
-        margin: 1em auto;
-        max-width: 800px;
-        width: 95%;
-        font-size: 18px;
-        line-height: 1.5;
-        padding: 20px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font-size: 18px;
+			line-height: 1.5;
+			padding: 20px;
+			background: white;
+			border-radius: 8px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		}
 
-    .example-wrapper code {
-        background: #F5F5F5;
-        padding: 2px 6px;
-        border-radius: 4px;
-    }
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+			border-radius: 4px;
+		}
 
-    h1 {
-        color: purple;
-        text-align: center;
-        margin-bottom: 1em;
-    }
+		h1 {
+			color: purple;
+			text-align: center;
+			margin-bottom: 1em;
+		}
 
-    button {
-        background-color: purple;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 10px 15px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
+		button {
+			background-color: purple;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			padding: 10px 15px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
 
-    button:hover {
-        background-color: darkviolet;
-    }
+		button:hover {
+			background-color: darkviolet;
+		}
 
-    .form-group {
-        margin-bottom: 1.5em;
-    }
+		.form-group {
+			margin-bottom: 1.5em;
+		}
 
-    label {
-        display: block;
-        margin-bottom: 0.5em;
-        font-weight: bold;
-    }
+		label {
+			display: block;
+			margin-bottom: 0.5em;
+			font-weight: bold;
+		}
 
-    input, select, textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px; box-sizing: border-box;
-    }
+		input,
+		select,
+		textarea {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
 
-    input:focus, select:focus, textarea:focus {border-color: purple; outline: none;}
-</style>
+		input:focus,
+		select:focus,
+		textarea:focus {
+			border-color: purple;
+			outline: none;
+		}
+	</style>
 
-<div>
-    <h1> Vendez votre article !</h1>
-    {{form(form_sell)}}
-    {{ form_end(form_sell) }}
-</div>
-{% endblock %}
+	<div>
+		<h1>
+			Vendez votre article !</h1>
+		{{form(form_sell)}}
+			{{ form_end(form_sell) }}
+		</div>
+	{% endblock %}
