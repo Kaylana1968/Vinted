@@ -42,6 +42,12 @@ class CallRequest
         return $allArticle;
     }
 
+    public function DeleteArticle(Article $article)
+    {
+        $this->entityManager->remove($article);
+        $this->entityManager->flush();
+    }
+
     public function GetAllFavoris()
     {
         $user = $this->security->getUser();
@@ -111,7 +117,7 @@ class CallRequest
         $user = $this->security->getUser();
 
         $articleList = $this->entityManager->getRepository(Article::class);
-        $allArticle = $articleList->findBy(['status' => 1, "seller" => $user]);
+        $allArticle = $articleList->findBy(["seller" => $user]);
 
         return $allArticle;
     }

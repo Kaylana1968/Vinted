@@ -118,6 +118,42 @@ class MainController extends AbstractController
         ]);
     }
 
+    #[Route('/edit-article/{id}', name: 'edit_article')]
+    public function editArticle(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        int $id
+    ) {
+        $editArticle = $this->callRequest->GetArticle($id);
+        $form = $this->createForm(FormSellType::class, $editArticle);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $imageFile = $form->get('picture')->getData();
+            $fileName = $editArticle->getId() . '.jpg';
+
+            // Move the file to the directory where images are stored
+            $imageFile->move(
+                $this->getParameter('images_directory'), // Defined in your config/services.yaml
+                $fileName
+            );
+
+            $editArticle->setPicture("img/" . $fileName);
+
+            $entityManager->persist($editArticle);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('article', [
+                'id' => $editArticle->getId()
+            ]);
+        }
+
+        return $this->render('main/edit.html.twig', [
+            'form_edit' => $form,
+        ]);
+    }
+
     #[Route('/message', name: 'message')]
     public function message(): Response
     {
@@ -238,12 +274,12 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/selled', name: 'selled')]
+    #[Route(path: '/my-product', name: 'my_product')]
     public function selled(): Response
     {
         $selledArticle = $this->callRequest->GetSelledArticleFromUser();
 
-        return $this->render('main/selled.html.twig', [
+        return $this->render('main/myproduct.html.twig', [
             'selledArticle' => $selledArticle
         ]);
     }

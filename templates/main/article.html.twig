@@ -6,51 +6,123 @@
 {% block body %}
 	<style>
 		.example-wrapper {
-			margin: 1em auto;
+			margin: 1.5em auto;
 			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
+			width: 90%;
+			font-family: 'Arial', sans-serif;
+			color: #333;
+			background: #f8f9fa;
+			padding: 15px;
+			border-radius: 6px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
+
+		.example-wrapper h1 {
+			font-size: 24px; /* Titre plus petit */
+			margin-bottom: 15px;
+			color: #007bff;
+			text-align: center;
 		}
+
+		.example-wrapper img {
+			display: block;
+			width: 100%;
+			height: auto;
+			max-height: 300px; /* Taille de l'image réduite */
+			margin: 0 auto 15px;
+			object-fit: cover;
+			border-radius: 6px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+
+		.example-wrapper p {
+			font-size: 16px; /* Taille de police plus petite */
+			line-height: 1.4;
+			margin-bottom: 8px;
+		}
+
+		.category, .price {
+			text-align: center;
+			font-size: 18px;
+		}
+
+		/* Réduction de l'espacement autour du prix */
+		.price {
+			color: #28a745;
+			font-weight: bold;
+			margin: 15px 0;
+		}
+
+		/* Boutons */
 		.buttons {
+			display: flex;
+			justify-content: center;
 			margin-top: 20px;
+			gap: 10px; /* Espacement réduit entre les boutons */
 		}
+
 		.buttons a {
-			margin-right: 10px;
-			padding: 10px 15px;
-			background-color: #007BFF;
+			padding: 8px 12px; /* Boutons plus compacts */
+			font-size: 14px; /* Taille de texte réduite */
 			color: white;
-			border: none;
-			cursor: pointer;
+			border-radius: 6px;
+			text-decoration: none;
+			transition: background-color 0.3s ease-in-out;
 		}
-		.buttons a:last-child {
-			background-color: #28A745;
+
+		/* Couleurs des boutons */
+		.buttons a {
+			background-color: #007bff;
 		}
+
+		.buttons a:nth-child(2) {
+			background-color: #17a2b8; /* Contact */
+		}
+
+		.buttons a:nth-child(3) {
+			background-color: #e83e8c; /* Ajouter aux favoris */
+		}
+
+		.buttons a:nth-child(4) {
+			background-color: #ffc107; /* Modifier */
+		}
+
+		.buttons a:nth-child(5) {
+			background-color: #dc3545; /* Supprimer */
+		}
+
+		/* Effet au survol */
 		.buttons a:hover {
-			opacity: 0.8;
+			opacity: 0.9;
+			transform: translateY(-1px); /* Effet plus subtil */
+		}
+
+		/* Ajustements de transition */
+		.example-wrapper img,
+		.buttons a {
+			transition: all 0.3s ease;
 		}
 	</style>
 
 	<div class="example-wrapper">
 		<h1>{{ article.title }}</h1>
 
-		<img src={{ asset(article.picture) }} onerror="this.onerror=null;this.src='{{ article.picture }}';" alt={{article.title}}>
+		<img src="{{ asset(article.picture) }}" onerror="this.onerror=null;this.src='{{ article.picture }}';" alt="{{ article.title }}">
 
 		<p>{{ article.description }}</p>
-		<p>{{ article.category }}</p>
-		<p>{{ article.price }}
-			€</p>
+		<p class="category">{{ article.category }}</p>
+		<p class="price">{{ article.price }}€</p>
 
-		{% if app.user != article.seller %}
-			<div class="buttons">
-				<a href={{ path('buy', {'id': article.id} ) }}>Acheter</a>
-				<a href={{ path('messageCategory', {'receiverId': article.seller.id} ) }}>Contacter le vendeur</a>
-				<a href={{ path('add_favorite', {'article_id': article.id} ) }}>💜</a>
-			</div>
-		{% endif %}
-
+		<div class="buttons">
+			{% if app.user != article.seller %}
+				<a href="{{ path('buy', {'id': article.id} ) }}">Buy</a>
+				<a href="{{ path('messageCategory', {'receiverId': article.seller.id} ) }}">Contact seller</a>
+				<a href="{{ path('add_favorite', {'article_id': article.id} ) }}">💜 Add to Favorites</a>
+			{% else %}
+				<a href="{{ path('edit_article', {'id': article.id} ) }}">Edit</a>
+				<a href="{{ path('delete_article', {'article': article.id} ) }}">Delete</a>
+			{% endif %}
+		</div>
 	</div>
 {% endblock %}
+

@@ -40,7 +40,7 @@ class Article
     /**
      * @var Collection<int, Favorite>
      */
-    #[ORM\OneToMany(targetEntity: Favorite::class, mappedBy: 'article_id', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Favorite::class, mappedBy: 'article', orphanRemoval: true)]
     private Collection $favorites;
 
     #[ORM\ManyToOne(inversedBy: 'buyed_articles')]

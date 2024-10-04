@@ -24,19 +24,21 @@ class FormSellType extends AbstractType
                 'mapped' => false,
             ])
             ->add('title', TextType::class, ['label' => 'Add a title', 'constraints' => [
-                new Assert\NotBlank(['message' => 'Le titre ne peut pas être vide.']),
+                new Assert\NotBlank(['message' => "Title can't be empty."]),
                 new Assert\Length([
                     'min' => 3,
                     'max' => 40,
-                    'minMessage' => 'Le nom doit contenir au moins {{ limit }} caractères.',
-                    'maxMessage' => 'Le nom ne peut pas dépasser {{ limit }} caractères.'
+                    'minMessage' => 'The name must contain at least {{ limit }} characters.',
+                    'maxMessage' => "The name can't exceed {{ limit }} characters."
                 ]),
             ]])
             ->add('description', TextareaType::class, ['label' => 'add a description of your article', 'constraints' => [
-                new Assert\NotBlank(['message' => 'La description ne ne peut pas être vide.']),
+                new Assert\NotBlank(['message' => "Description can't be empty."]),
                 new Assert\Length([
                     'min' => 3,
-                    'minMessage' => 'Le nom doit contenir au moins {{ limit }} caractères.',
+                    'max' => 1027,
+                    'minMessage' => 'The description must contain at least {{ limit }} characters.',
+                    'maxMessage' => "The description can't exceed {{ limit }} characters."
                 ]),
             ]])
             ->add(
@@ -52,11 +54,11 @@ class FormSellType extends AbstractType
             ->add('price', MoneyType::class, [
                 'label' => 'Choose a price',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'Le prix doit être renseigné.']),
-                    new Assert\Positive(['message' => 'Le prix doit être supérieur à 0.']),
+                    new Assert\NotBlank(['message' => "The price must be defined."]),
+                    new Assert\Positive(['message' => 'The price must be greater than 0.']),
                 ],
             ])
-            ->add('Ajoutez', SubmitType::class)
+            ->add('Confirm', SubmitType::class)
         ;
     }
 

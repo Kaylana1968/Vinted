@@ -1,36 +1,104 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home
-{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
 	<style>
 		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
+			margin: 2em auto;
+			max-width: 1200px;
 			width: 95%;
-			font: 18px / 1.5 sans-serif;
+			font-family: 'Arial', sans-serif;
+			color: #333;
 		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
+
+		/* Mise en page du conteneur d'articles */
+		.article-container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			gap: 20px;
+		}
+
+		/* Style de chaque article */
+		.article-card {
+			flex: 1 1 calc(33% - 20px); /* Taille adaptable à 3 articles par ligne */
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			overflow: hidden;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			transition: transform 0.3s ease-in-out;
+		}
+
+		/* Style au survol */
+		.article-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+		}
+
+		/* Image de l'article */
+		.article-card img {
+			width: 100%;
+			height: 200px;
+			object-fit: cover;
+			border-bottom: 1px solid #ddd;
+		}
+
+		/* Contenu de l'article */
+		.article-content {
+			padding: 15px;
+		}
+
+		/* Titre de l'article */
+		.article-title {
+			font-size: 24px;
+			margin-bottom: 10px;
+			color: #007bff;
+		}
+
+		.article-title:hover {
+			text-decoration: underline;
+		}
+
+		/* Description de l'article */
+		.article-description {
+			font-size: 16px;
+			margin-bottom: 10px;
+		}
+
+		/* Prix de l'article */
+		.article-price {
+			font-weight: bold;
+			color: #28a745;
+		}
+
+		/* Styles pour le lien de chaque article */
+		.article-card a {
+			text-decoration: none;
+			color: inherit;
 		}
 	</style>
 
 	<div class="example-wrapper">
+		<div class="article-container">
 
-		{% for article in all_article %}
+			{% for article in all_article %}
 
-			<a href="{{ path('article', {'id': article.id}) }}">
-				<h1>{{article.title}}</h1>
+				<div class="article-card">
+					<a href="{{ path('article', {'id': article.id}) }}">
+						<img src="{{ asset(article.picture) }}" onerror="this.onerror=null;this.src='{{ article.picture }}';" alt="{{ article.title }}">
+						
+						<div class="article-content">
+							<h1 class="article-title">{{ article.title }}</h1>
+							<p class="article-description">{{ article.description }}</p>
+							<p class="article-price">{{ article.price|number_format(2, '.', ',') }}€</p>
+						</div>
+					</a>
+				</div>
 
-				<img src={{ asset(article.picture) }} onerror="this.onerror=null;this.src='{{ article.picture }}';" alt={{article.title}}>
+			{% endfor %}
 
-				{{article.description}}
-				{{article.price|number_format(2, '.', ',')}}€
-			</a>
-
-		{% endfor %}
-
+		</div>
 	</div>
 {% endblock %}
+

@@ -30,4 +30,20 @@ class ApiController extends AbstractController
             'id' => $articleId
         ]);
     }
+
+    #[Route('/delete-article', name: 'delete_article')]
+    public function deleteArticle(Request $request, CallRequest $callRequest)
+    {
+        $articleId = $request->query->get('article');
+
+        $article = $callRequest->GetArticle($articleId);
+
+        if ($this->getUser() != $article->getSeller()) {
+            return $this->redirectToRoute('home');
+        }
+
+        $callRequest->DeleteArticle($article);  
+
+        return $this->redirectToRoute('home');
+    }
 }
